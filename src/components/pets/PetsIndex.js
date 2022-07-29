@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 import LoadingScreen from '../shared/LoadingScreen'
 import { getAllPets } from '../../api/pets'
-
+import messages from '../shared/AutoDismissAlert/messages'
 
 // PetsIndex should make a request to the api
 // To get all pets
@@ -22,12 +22,29 @@ const cardContainerStyle = {
 
 const PetsIndex = (props) => {
     const [pets, setPets] = useState(null)
+    const [error, setError] = useState(false)
+
+    const { msgAlert } = props
+
+    console.log('Props in PetsIndex', props)
 
     useEffect(() => {
+        console.log(props)
         getAllPets()
             .then(res => setPets(res.data.pets))
-            .catch(err => console.log(err))
+            .catch(err => {
+                msgAlert({
+                    heading: 'Error Getting Pets',
+                    message: messages.getPetsFailure,
+                    variant: 'danger',
+                })
+                setError(true)
+            })
     }, [])
+
+    if (error) {
+        return <p>Error!</p>
+    }
 
     // If pets haven't been loaded yet, show a loading message
     if (!pets) {
