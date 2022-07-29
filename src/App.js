@@ -76,7 +76,11 @@ const App = () => {
 				/>
 				<Route
 					path="/addPet"
-					element={ <PetForm /> }
+					element={
+						<RequireAuth user={ user }>
+							<PetForm />
+						</RequireAuth>  
+					}
 				/>
 			</Routes>
 			{msgAlerts.map((msgAlert) => (
