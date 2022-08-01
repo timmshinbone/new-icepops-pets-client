@@ -10,14 +10,24 @@ import LoadingScreen from '../shared/LoadingScreen'
 import { getOnePet, updatePet, removePet } from '../../api/pets'
 import messages from '../shared/AutoDismissAlert/messages'
 import EditPetModal from './EditPetModal'
+import NewToyModal from '../toys/NewToyModal'
+import ShowToy from '../toys/ShowToy'
 
 // We need to get the pet's id from the parameters
 // Then we need to make a request to the api
 // Then we need to display the results in this component
 
+// we'll use a style object to lay out the toy cards
+const cardContainerLayout = {
+    display: 'flex',
+    justifyContent: 'center',
+    flexFlow: 'row wrap'
+}
+
 const ShowPet = (props) => {
     const [pet, setPet] = useState(null)
     const [editModalShow, setEditModalShow] = useState(false)
+    const [toyModalShow, setToyModalShow] = useState(false)
     const [updated, setUpdated] = useState(false)
 
     const { id } = useParams()
@@ -67,6 +77,21 @@ const ShowPet = (props) => {
                 })
             })
     }
+    let toyCards
+    if (pet) {
+        if (pet.toys.length > 0) {
+            toyCards = pet.toys.map(toy => (
+                <ShowToy 
+                    key={toy._id}
+                    toy={toy}
+                    pet={pet}
+                    user={user}
+                    msgAlert={msgAlert}
+                    triggerRefresh={() => setUpdated(prev => !prev)}
+                />
+            ))
+        }
+    }
 
     if (!pet) {
         return <LoadingScreen />
@@ -87,6 +112,11 @@ const ShowPet = (props) => {
                         </Card.Text>
                     </Card.Body>
                     <Card.Footer>
+                        <Button onClick={() => setToyModalShow(true)}
+                            className="m-2" variant="info"
+                        >
+                            Give {pet.name} a toy!
+                        </Button>
                         {
                             pet.owner && user && pet.owner._id === user._id 
                             ?
@@ -110,6 +140,9 @@ const ShowPet = (props) => {
                     </Card.Footer>
                 </Card>
             </Container>
+            <Container style={cardContainerLayout}>
+                {toyCards}
+            </Container>
             <EditPetModal 
                 user={user}
                 pet={pet} 
@@ -118,6 +151,14 @@ const ShowPet = (props) => {
                 msgAlert={msgAlert}
                 triggerRefresh={() => setUpdated(prev => !prev)}
                 handleClose={() => setEditModalShow(false)} 
+            />
+            <NewToyModal 
+                pet={pet}
+                show={toyModalShow}
+                user={user}
+                msgAlert={msgAlert}
+                triggerRefresh={() => setUpdated(prev => !prev)}
+                handleClose={() => setToyModalShow(false)} 
             />
         </>
     )
