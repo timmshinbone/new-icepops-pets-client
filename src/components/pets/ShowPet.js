@@ -101,7 +101,7 @@ const ShowPet = (props) => {
                                     className="m-2"
                                     variant="danger"
                                 >
-                                    Delete The Pet
+                                    Set {pet.name} Free
                                 </Button>
                             </>
                             :
