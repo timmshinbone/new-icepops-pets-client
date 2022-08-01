@@ -4,6 +4,8 @@ import {
 } from 'react-bootstrap'
 
 const PetForm = (props) => {
+    const { pet, handleChange } = props
+
     return (
         <Form>
             <Form.Label htmlFor="name">Name</Form.Label>
@@ -11,12 +13,16 @@ const PetForm = (props) => {
                 placeholder="What is your pet's name?"
                 name="name"
                 id="name"
+                value={ pet.name }
+                onChange={ handleChange }
             />
             <Form.Label htmlFor="type">Type</Form.Label>
             <Form.Control
                 placeholder="What kind of pet is this?"
                 name="type"
                 id="type"
+                value={ pet.type }
+                onChange={ handleChange }
             />
             <Form.Label htmlFor="age">Age</Form.Label>
             <Form.Control
@@ -24,11 +30,14 @@ const PetForm = (props) => {
                 type="number"
                 name="age"
                 id="age"
+                value={ pet.age }
+                onChange={ handleChange }
             />
             <Form.Check
                 label="Is this pet adoptable?"
                 name="adoptable"
-                defaultChecked={ false  }
+                defaultChecked={ pet.adoptable  }
+                onChange={ handleChange }
             />
             <Button type="submit">Submit</Button>
         </Form>

@@ -18,6 +18,7 @@ const authenticatedOptions = (
 				Sign Out
 			</Link>
 		</Nav.Item>
+
 	</>
 )
 
