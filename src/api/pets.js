@@ -1,14 +1,17 @@
 import apiUrl from '../apiConfig'
 import axios from 'axios'
 
+// READ => INDEX
 export const getAllPets = () => {
     return axios(`${apiUrl}/pets`)
 }
 
+// READ => SHOW
 export const getOnePet = (id) => {
     return axios(`${apiUrl}/pets/${id}`)
 }
 
+// CREATE
 export const createPet = (user, newPet) => {
     // console.log('createPet in api was hit')
     // in our createpet form, we're building an object
@@ -27,6 +30,7 @@ export const createPet = (user, newPet) => {
 	})
 }
 
+// UPDATE
 export const updatePet = (user, updatedPet) => {
     // console.log('createPet in api was hit')
     // in our createpet form, we're building an object
@@ -43,4 +47,15 @@ export const updatePet = (user, updatedPet) => {
 		},
 		data: { pet: updatedPet }
 	})
+}
+
+// DELETE
+export const removePet = (user, petId) => {
+    return axios({
+        url: `${apiUrl}/pets/${petId}`,
+        method: 'DELETE',
+        headers: {
+            Authorization: `Token token=${user.token}`,
+        }
+    })
 }

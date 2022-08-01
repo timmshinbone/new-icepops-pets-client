@@ -7,7 +7,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Card, Button } from 'react-bootstrap'
 
 import LoadingScreen from '../shared/LoadingScreen'
-import { getOnePet, updatePet } from '../../api/pets'
+import { getOnePet, updatePet, removePet } from '../../api/pets'
 import messages from '../shared/AutoDismissAlert/messages'
 import EditPetModal from './EditPetModal'
 
@@ -44,6 +44,30 @@ const ShowPet = (props) => {
             })
     }, [updated])
 
+    // here we'll declare a function that runs which will remove the pet
+    // this function's promise chain should send a message, and then go somewhere
+    const removeThePet = () => {
+        removePet(user, pet.id)
+            // on success send a success message
+            .then(() => {
+                msgAlert({
+                    heading: 'Success',
+                    message: messages.removePetSuccess,
+                    variant: 'success'
+                })
+            })
+            // then navigate to index
+            .then(() => {navigate('/')})
+            // on failure send a failure message
+            .catch(err => {                   
+                msgAlert({
+                    heading: 'Error removing pet',
+                    message: messages.removePetFailure,
+                    variant: 'danger'
+                })
+            })
+    }
+
     if (!pet) {
         return <LoadingScreen />
     }
@@ -66,9 +90,20 @@ const ShowPet = (props) => {
                         {
                             pet.owner && user && pet.owner._id === user._id 
                             ?
-                            <Button onClick={() => setEditModalShow(true)} className="m-2" variant="warning">
-                                Edit Pet
-                            </Button>
+                            <>
+                                <Button onClick={() => setEditModalShow(true)} 
+                                    className="m-2" 
+                                    variant="warning"
+                                >
+                                    Edit Pet
+                                </Button>
+                                <Button onClick={() => removeThePet()}
+                                    className="m-2"
+                                    variant="danger"
+                                >
+                                    Delete The Pet
+                                </Button>
+                            </>
                             :
                             null
                         }
