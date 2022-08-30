@@ -1,7 +1,8 @@
 let apiUrl
 const apiUrls = {
     // YOU MUST CHANGE PRODUCTION URL WHEN DEPLOYING
-	production: 'https://icepopspets.herokuapp.com',
+	// production: 'https://icepopspets.herokuapp.com',
+	production: 'https://icepoppetsapi.fly.dev',
 	development: 'http://localhost:8000',
 }
 
